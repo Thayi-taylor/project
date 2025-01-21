@@ -5,24 +5,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Table(name = "Seats")
 @Getter
 @Setter
-@Table(name = "Seats", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"ScreenID", "RowNumber", "SeatNumber"})
-})
 public class SeatsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "SeatID")
-    private Integer seatId;
+    @Column(name = "seatId")
+    private int seatId;
 
-    @ManyToOne
-    @JoinColumn(name = "ScreenID", nullable = false)
-    private ScreensEntity screen;
-
-    @Column(name = "RowNumber", nullable = false)
+    @Column(name = "rowNumber")
     private String rowNumber;
 
-    @Column(name = "SeatNumber", nullable = false)
-    private Integer seatNumber;
+    @Column(name = "seatNumber")
+    private int seatNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "screenId", referencedColumnName = "screenId")
+    private ScreensEntity screenRef;
 }

@@ -1,27 +1,34 @@
 package com.project.service;
 
-import com.project.entity.SeatsEntity;
+import com.project.DTO.SeatsDTO;
+import com.project.repository.SchedulesRepository;
 import com.project.repository.SeatsRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
-@RequiredArgsConstructor
 public class SeatsService {
-    private final SeatsRepository seatsRepository;
 
-    public List<SeatsEntity> getSeatsByScreenId(Integer screenId) {
-        return seatsRepository.findByScreen_ScreenId(screenId);
+    @Autowired
+    private SeatsRepository seatsRepository;
+
+    @Autowired
+    private SchedulesRepository scheduleRepository;
+
+    public List<SeatsDTO> getSeatsForSchedule(int scheduleId) {
+        // 실제 DB에서 screenId 조회
+        Integer screenId = findScreenIdByScheduleId(scheduleId);
+        if (screenId == null) {
+            throw new RuntimeException("해당 scheduleId에 대한 screenId를 찾을 수 없습니다.");
+        }
+        return seatsRepository.findSeatsByScreenId(screenId);
     }
 
-    public Optional<SeatsEntity> getSeatById(Integer seatId) {
-        return seatsRepository.findById(seatId);
-    }
-
-    public SeatsEntity getSeatByScreenAndPosition(Integer screenId, String row, Integer seatNumber) {
-        return seatsRepository.findByScreen_ScreenIdAndRowNumberAndSeatNumber(screenId, row, seatNumber);
+    private Integer findScreenIdByScheduleId(int scheduleId) {
+        return scheduleRepository.findScreenIdByScheduleId(scheduleId);
     }
 }
+
+

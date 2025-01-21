@@ -1,26 +1,31 @@
 package com.project.controller;
 
-import com.project.entity.SeatsEntity;
+import com.project.DTO.SeatsDTO;
 import com.project.service.SeatsService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
 
-@RestController
-@RequestMapping("/seats")
-@RequiredArgsConstructor
+@Controller
 public class SeatsController {
+
     private final SeatsService seatsService;
 
-    @GetMapping("/screen/{screenId}")
-    public List<SeatsEntity> getSeatsByScreenId(@PathVariable Integer screenId) {
-        return seatsService.getSeatsByScreenId(screenId);
+    public SeatsController(SeatsService seatsService) {
+        this.seatsService = seatsService;
     }
 
-    @GetMapping("/{seatId}")
-    public Optional<SeatsEntity> getSeatById(@PathVariable Integer seatId) {
-        return seatsService.getSeatById(seatId);
+    @GetMapping("/seats")
+    public String getSeats(@RequestParam(value = "scheduleId", required = false) Integer scheduleId, Model model) {
+        if(scheduleId == null) {
+            scheduleId = 1; // 기본값 설정
+        }
+        List<SeatsDTO> scheduledSeats = seatsService.getSeatsForSchedule(scheduleId);
+        model.addAttribute("seats", scheduledSeats);
+        model.addAttribute("scheduleId", scheduleId);
+        return "SeatsReservation"
     }
 }

@@ -11,5 +11,5 @@ public class SeatsDTO {
     private int seatId;
     private String rowNumber;
     private int seatNumber;
-    private String status;
+    private String status; // Available or Reserved
 }

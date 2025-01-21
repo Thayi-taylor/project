@@ -7,25 +7,18 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
+@Table(name = "Screens")
 @Getter
 @Setter
-@Table(name = "Screens")
 public class ScreensEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ScreenID")
-    private Integer screenId;
+    @Column(name = "screenId")
+    private int screenId;
 
-    @ManyToOne
-    @JoinColumn(name = "TheaterID", nullable = false)
-    private TheatersEntity theater;
+    private String ScreenName;
+    private int totalSeats;
 
-    @Column(name = "ScreenName", nullable = false)
-    private String screenName;
-
-    @Column(name = "TotalSeats", nullable = false)
-    private Integer totalSeats;
-
-    @OneToMany(mappedBy = "screen", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SeatsEntity> seats;
+    @OneToMany(mappedBy = "screens", cascade = CascadeType.ALL)
+    private List<SeatsEntity> seatsEntityList;
 }

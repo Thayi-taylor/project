@@ -4,33 +4,20 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 @Entity
+@Table(name = "Schedules")
 @Getter
 @Setter
-@Table(name = "Schedules")
 public class SchedulesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ScheduleID")
-    private Integer scheduleId;
+    private int scheduleId;
 
     @ManyToOne
-    @JoinColumn(name = "ScreenID", nullable = false)
-    private ScreensEntity screen;
+    @JoinColumn(name = "screenId", referencedColumnName = "screenId", nullable = false) // 명시적 컬럼 매핑
+    private ScreensEntity scheduledScreen;
 
-    @ManyToOne
-    @JoinColumn(name = "MovieID", nullable = false)
-    private MoviesEntity movie;
-
-    @Column(name = "MovieShowDate", nullable = false)
-    private LocalDate movieShowDate;
-
-    @Column(name = "MovieStartTime", nullable = false)
-    private LocalTime movieStartTime;
-
-    @Column(name = "MovieDuration", nullable = false)
-    private Integer movieDuration;
+    private int movieId;
+    private String showDate;
+    private String startTime;
 }
