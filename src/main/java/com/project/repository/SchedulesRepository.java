@@ -1,18 +1,17 @@
 package com.project.repository;
 
+import com.project.entity.SchedulesEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.scheduling.annotation.Schedules;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface SchedulesRepository extends JpaRepository<Schedules, Integer> {
+import java.time.LocalDate;
+import java.util.List;
 
-    // 특정 스케줄ID에 해당하는 스크린ID 조회
-    @Query("""
-            SELECT s.screens.screenId
-            FROM Schedules s
-            WHERE s.scheduleId = :scheduleId
-           """)
-    Integer findScreenIdByScheduleId(int scheduleId);
+@Repository
+public interface SchedulesRepository extends JpaRepository<SchedulesEntity, Integer> {
+    List<SchedulesEntity> findByMovie_MovieId(Integer movieId);
+
+    List<SchedulesEntity> findByScreen_ScreenId(Integer screenId);
+
+    List<SchedulesEntity> findByMovieShowDateBetween(LocalDate startDate, LocalDate endDate);
 }

@@ -8,16 +8,16 @@ import lombok.Setter;
 @Table(name = "appliedDiscounts")
 @Getter
 @Setter
-public class AppliedDiscounts {
+public class AppliedDiscountsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int appliedDiscountId;
 
     @ManyToOne
     @JoinColumn(name = "reservationId", referencedColumnName = "ReservationId")
-    private Reservations reservations;
+    private ReservationsEntity reservations;
 
     @ManyToOne
     @JoinColumn(name = "discountId", referencedColumnName = "DiscountId")
-    private Discounts discounts;
+    private DiscountsEntity discountsEntity;
 }

@@ -1,28 +1,9 @@
-import React, { useState, useEffect } from "react";
-import "./SeatReservation.css"; // 스타일 분리
+import React from "react";
+import { useSeats } from "./seatFunctions";
+import "./styles.css"; // 스타일 유지
 
 const SeatReservation = ({ scheduleId }) => {
-    const [seats, setSeats] = useState([]);
-    const [currentScheduleId, setCurrentScheduleId] = useState(scheduleId || 1);
-
-    // 스케줄 ID 변경 시 좌석 불러오기
-    useEffect(() => {
-        fetch(`/api/seats?scheduleId=${currentScheduleId}`)
-            .then((response) => response.json())
-            .then((data) => setSeats(data))
-            .catch((error) => console.error("Error fetching seats:", error));
-    }, [currentScheduleId]);
-
-    // 좌석 예약 토글
-    const toggleSeat = (seatId) => {
-        setSeats((prevSeats) =>
-            prevSeats.map((seat) =>
-                seat.seatId === seatId
-                    ? { ...seat, status: seat.status === "available" ? "reserved" : "available" }
-                    : seat
-            )
-        );
-    };
+    const { seats, currentScheduleId, setCurrentScheduleId, toggleSeat } = useSeats(scheduleId);
 
     return (
         <div className="container">
@@ -47,10 +28,8 @@ const SeatReservation = ({ scheduleId }) => {
                     {/* A~K 행 반복 */}
                     {["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"].map((rowLetter) => (
                         <tr key={rowLetter}>
-                            {/* 행 이름 박스 */}
                             <td className="row-label">{rowLetter}</td>
 
-                            {/* 좌석 (6 - 공백 - 9 - 공백 - 6) */}
                             {[...Array(21)].map((_, index) => {
                                 const seat = seats.find(
                                     (s) => s.rowNumber === rowLetter && s.seatNumber === index + 1

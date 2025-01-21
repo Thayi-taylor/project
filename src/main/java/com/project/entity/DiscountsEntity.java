@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @Table(name = "discounts")
 @Getter
 @Setter
-public class Discounts {
+public class DiscountsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int discountId;
