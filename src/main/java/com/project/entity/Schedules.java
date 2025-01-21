@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Entity
-@Table(name = "Schdules")
+@Table(name = "Schedules")
 @Getter
 @Setter
 public class Schedules {
@@ -17,5 +20,12 @@ public class Schedules {
     @JoinColumn(name = "screenId", referencedColumnName = "ScreenId")
     private Screens screens;
 
+    @ManyToOne
+    @JoinColumn(name = "movieId", referencedColumnName = "MovieID")
+    private Movies movies;
 
+    private LocalDate MovieShowDate;
+    private LocalTime MovieStartTime;
+    private int MovieDuration;
+    private LocalTime MovieEndTime;
 }
