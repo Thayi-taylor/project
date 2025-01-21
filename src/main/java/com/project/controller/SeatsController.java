@@ -26,6 +26,6 @@ public class SeatsController {
         List<SeatsDTO> scheduledSeats = seatsService.getSeatsForSchedule(scheduleId);
         model.addAttribute("seats", scheduledSeats);
         model.addAttribute("scheduleId", scheduleId);
-        return "SeatsReservation"
+        return "SeatsReservation";
     }
 }
