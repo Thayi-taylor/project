@@ -21,5 +21,7 @@ public class ReservedSeats {
     @JoinColumn(name = "seatId", referencedColumnName = "SeatId")
     private Seats seats;
 
-    private int seatPrice;
+    @ManyToOne
+    @JoinColumn(name = "SeatPrice", referencedColumnName = "SeatPrice")
+    private SeatsGrade seatsGrade;
 }
