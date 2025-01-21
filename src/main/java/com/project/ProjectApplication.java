@@ -9,9 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = "com.project.entity") // 엔티티 패키지 스캔
 @EnableJpaRepositories(basePackages = "com.project.repository")
 public class ProjectApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectApplication.class, args);
 	}
-
 }

@@ -1,0 +1,46 @@
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+.seat-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 5px; /* 좌석 간 공백 */
+}
+
+.row-label {
+    font-weight: bold;
+    background-color: #555;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.seat {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.seat.available {
+    background-color: lightgreen;
+}
+
+.seat.reserved {
+    background-color: lightcoral;
+}
+
+.seat.available:hover {
+    background-color: green;
+    color: white;
+}
+
+.seat-space {
+    width: 10px;
+}
