@@ -8,8 +8,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class SeatsDTO {
-    private int seatId;
+
+    private Integer seatId;
     private String rowNumber;
-    private int seatNumber;
+    private Integer seatNumber;
     private String status; // Available or Reserved
 }

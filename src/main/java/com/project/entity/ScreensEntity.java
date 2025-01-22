@@ -19,6 +19,6 @@ public class ScreensEntity {
     private String ScreenName;
     private int totalSeats;
 
-    @OneToMany(mappedBy = "screens", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "screenRef", cascade = CascadeType.ALL)
     private List<SeatsEntity> seatsEntityList;
 }

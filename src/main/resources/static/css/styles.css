@@ -44,3 +44,8 @@
 .seat-space {
     width: 10px;
 }
+
+.seat.selected {
+    background-color: orange !important;
+    border: 2px solid darkorange;
+}

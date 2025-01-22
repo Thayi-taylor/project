@@ -24,8 +24,8 @@ public class SeatsController {
             scheduleId = 1; // 기본값 설정
         }
         List<SeatsDTO> scheduledSeats = seatsService.getSeatsForSchedule(scheduleId);
-        model.addAttribute("seats", scheduledSeats);
+        model.addAttribute("scheduledSeats", scheduledSeats);
         model.addAttribute("scheduleId", scheduleId);
-        return "SeatsReservation";
+        return "SeatReservation";
     }
 }

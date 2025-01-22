@@ -4,24 +4,54 @@ import "./SeatReservation.css"; // 스타일 분리
 const SeatReservation = ({ scheduleId }) => {
     const [seats, setSeats] = useState([]);
     const [currentScheduleId, setCurrentScheduleId] = useState(scheduleId || 1);
+    const [selectedSeats, setSelectedSeats] = useState(new Set()); // ✅ 선택한 좌석 저장
 
     // 스케줄 ID 변경 시 좌석 불러오기
     useEffect(() => {
         fetch(`/api/seats?scheduleId=${currentScheduleId}`)
             .then((response) => response.json())
-            .then((data) => setSeats(data))
+            .then((data) => {
+                setSeats(data);
+                setSelectedSeats(new Set()); // ✅ 스케줄 변경 시 선택 초기화
+            })
             .catch((error) => console.error("Error fetching seats:", error));
     }, [currentScheduleId]);
 
-    // 좌석 예약 토글
+    // 좌석 선택/해제
     const toggleSeat = (seatId) => {
-        setSeats((prevSeats) =>
-            prevSeats.map((seat) =>
-                seat.seatId === seatId
-                    ? { ...seat, status: seat.status === "available" ? "reserved" : "available" }
-                    : seat
-            )
-        );
+        setSelectedSeats((prevSelectedSeats) => {
+            const newSelectedSeats = new Set(prevSelectedSeats);
+            if (newSelectedSeats.has(seatId)) {
+                newSelectedSeats.delete(seatId); // 선택 취소
+            } else {
+                newSelectedSeats.add(seatId); // 선택 추가
+            }
+            return newSelectedSeats;
+        });
+    };
+
+    // 예약 요청
+    const handleReserveSeats = () => {
+        if (selectedSeats.size === 0) {
+            alert("좌석을 선택해주세요!");
+            return;
+        }
+
+        fetch("/api/reserve", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ seats: Array.from(selectedSeats), scheduleId: currentScheduleId })
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                setSelectedSeats(new Set()); // ✅ 예약 후 선택 초기화
+                setSeats(seats.map(seat => ({
+                    ...seat,
+                    status: selectedSeats.has(seat.seatId) ? "reserved" : seat.status // ✅ 서버 응답 반영
+                })));
+            })
+            .catch(error => console.error("Error reserving seats:", error));
     };
 
     return (
@@ -59,7 +89,7 @@ const SeatReservation = ({ scheduleId }) => {
                                     <React.Fragment key={index}>
                                         {index === 6 || index === 15 ? <td className="seat-space"></td> : null}
                                         <td
-                                            className={`seat ${seat?.status || "empty"}`}
+                                            className={`seat ${seat?.status || "empty"} ${selectedSeats.has(seat?.seatId) ? "selected" : ""}`}
                                             onClick={() => seat && seat.status === "available" && toggleSeat(seat.seatId)}
                                         >
                                             {seat ? seat.seatNumber : ""}
@@ -71,6 +101,11 @@ const SeatReservation = ({ scheduleId }) => {
                     ))}
                     </tbody>
                 </table>
+            </div>
+
+            {/* ✅ 예약 버튼 추가 */}
+            <div className="text-center mt-3">
+                <button className="btn btn-success" onClick={handleReserveSeats}>예약하기</button>
             </div>
         </div>
     );
